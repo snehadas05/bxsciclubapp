@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../colors.dart';
 import 'homepage.dart';
 import 'useraccount.dart';
-import 'studentinfo.dart';
 import 'DB.dart';
 import 'package:postgres/postgres.dart';
 
@@ -14,15 +13,12 @@ class Login extends StatefulWidget {
 }
 
 class LoginState extends State<Login> {
-  final userList = StudentInfo.studentInfoList();
-  List<StudentInfo> foundStudent = [];
   final emailcontroller = TextEditingController();
   final passwordcontroller = TextEditingController();
   String email = '';
   String password = '';
   @override
   void initState() {
-    foundStudent = userList;
     super.initState();
   }
 
@@ -84,7 +80,7 @@ class LoginState extends State<Login> {
                 bool a = await login(email, password);
                 if (a == true) {
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => HomePage()));
+                      context, MaterialPageRoute(builder: (_) => HomePage(useremail: email)));
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(

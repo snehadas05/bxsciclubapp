@@ -1,6 +1,6 @@
 import 'homepage.dart';
 import 'package:flutter/material.dart';
-import 'teacherinfo.dart';
+
 import 'colors.dart';
 import 'db.dart';
 
@@ -12,8 +12,6 @@ class NewTeacher extends StatefulWidget {
 }
 
 class NewTeacherState extends State<NewTeacher> {
-  final infoList = TeacherInfo.teacherInfoList();
-
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final firstNameController = TextEditingController();
@@ -92,26 +90,28 @@ class NewTeacherState extends State<NewTeacher> {
               decoration: BoxDecoration(
                   color: xanadu, borderRadius: BorderRadius.circular(20)),
               child: TextButton(
-                onPressed: () {
+                onPressed: () async {
                   String email = emailController.text;
                   String password = passwordController.text;
                   String fn = firstNameController.text;
                   String ln = lastNameController.text;
-                  createNewTeacherUser(fn, ln, email, password);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      behavior: SnackBarBehavior.floating,
-                      content: Container(
-                          padding: const EdgeInsets.all(16),
-                          height: 90,
-                          decoration: const BoxDecoration(
-                              color: Color.fromARGB(15, 211, 13, 66),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20))),
-                          child: const Text(
-                              'account creation succesful! retun to login page and enter your email and password')),
-                    ),
-                  ); //connects to next page
+                  bool a = await createNewTeacherUser(fn, ln, email, password);
+                  if (a == true) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        content: Container(
+                            padding: const EdgeInsets.all(16),
+                            height: 90,
+                            decoration: const BoxDecoration(
+                                color: Color.fromARGB(15, 211, 13, 66),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20))),
+                            child: const Text(
+                                'account creation succesful! retun to login page and enter your email and password')),
+                      ),
+                    );
+                  } 
                 },
                 child: Text(
                   'Create',
@@ -125,14 +125,14 @@ class NewTeacherState extends State<NewTeacher> {
 
   void addField(String _email, String _password, String _firstname,
       String _lastname, String _clubAdvising) {
-    setState(() {
-      infoList.add(TeacherInfo(
-          email: _email,
-          password: _password,
-          firstname: _firstname,
-          lastname: _lastname,
-          clubadvising: _clubAdvising));
-    });
+    // setState(() {
+    //   infoList.add(TeacherInfo(
+    //       email: _email,
+    //       password: _password,
+    //       firstname: _firstname,
+    //       lastname: _lastname,
+    //       clubadvising: _clubAdvising));
+    // });
     emailController.clear();
     passwordController.clear();
     firstNameController.clear();

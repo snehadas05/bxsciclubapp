@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
-import 'studentinfo.dart';
+
 import 'colors.dart';
 import 'homepage.dart';
 import 'db.dart';
@@ -15,8 +15,6 @@ class NewStudent extends StatefulWidget {
 }
 
 class NewStudentState extends State<NewStudent> {
-  final infoList = StudentInfo.studentInfoList();
-
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final osisController = TextEditingController();
@@ -114,21 +112,25 @@ class NewStudentState extends State<NewStudent> {
                   String fn = firstNameController.text;
                   String ln = lastNameController.text;
                   String gradyr = graduatingYearController.text;
-                  createNewStudentUser(fn, ln, email, osis, password, gradyr);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      behavior: SnackBarBehavior.floating,
-                      content: Container(
-                          padding: const EdgeInsets.all(16),
-                          height: 90,
-                          decoration: const BoxDecoration(
-                              color: Color.fromARGB(15, 211, 13, 66),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20))),
-                          child: const Text(
-                              'account creation succesful! retun to login page and enter your email and password')),
-                    ),
-                  );
+                  bool a = await createNewStudentUser(
+                      fn, ln, email, osis, password, gradyr);
+                  if (a == true) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        content: Container(
+                            padding: const EdgeInsets.all(16),
+                            height: 90,
+                            decoration: const BoxDecoration(
+                                color: Color.fromARGB(15, 211, 13, 66),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20))),
+                            child: const Text(
+                                'account creation succesful! retun to login page and enter your email and password')),
+                      ),
+                    );
+                  }
+
                   //connects to next page
                 },
                 child: Text(
@@ -143,15 +145,6 @@ class NewStudentState extends State<NewStudent> {
 
   void addField(String _email, String _password, String _osis,
       String _firstname, String _lastname, String _gradYear) {
-    setState(() {
-      infoList.add(StudentInfo(
-          email: _email,
-          password: _password,
-          osis: _osis,
-          firstname: _firstname,
-          lastname: _lastname,
-          gradyear: _gradYear));
-    });
     emailController.clear();
     passwordController.clear();
     osisController.clear();
@@ -160,34 +153,3 @@ class NewStudentState extends State<NewStudent> {
     graduatingYearController.clear();
   }
 }
-
-// ListTile _tile(String hint) {
-//   return ListTile(
-//       title: TextField(
-//           controller: TextEditingController(),
-//           decoration: InputDecoration(
-//             hintText: hint,
-//             border: InputBorder.none,
-//           )));
-// }
-
-// ListTile _clubselect extends DropDo(){
-//   String dropdownValue = clubs.first;
-//   return DropdownButton<String>(
-//     value: dropdownValue,
-//     icon: const Icon(Icons.arrow_drop_down),
-//     elevation: 16,
-//     style: const TextStyle(color: Colors.black)
-//     onChanged: (String? value){
-//       setState(() {
-//         dropdownvalue = value!;
-//       });
-//     },
-//     items: clubs.map<DropdownMenuItem<String>>((String value) {
-//       return DropdownMenuItem(
-//         value: value,
-//         child: Text(value),
-//       );
-//     }).toList(),
-//   );
-// }
